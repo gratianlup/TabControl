@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabControl", "TabControl\TabControl.csproj", "{C84B7A1F-EFCF-4096-82D0-EF312B05A677}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabControlTester", "TabControlTester\TabControlTester.csproj", "{414792DC-D88D-429B-AFE3-307B5C9D19D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C84B7A1F-EFCF-4096-82D0-EF312B05A677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C84B7A1F-EFCF-4096-82D0-EF312B05A677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C84B7A1F-EFCF-4096-82D0-EF312B05A677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C84B7A1F-EFCF-4096-82D0-EF312B05A677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{414792DC-D88D-429B-AFE3-307B5C9D19D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{414792DC-D88D-429B-AFE3-307B5C9D19D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{414792DC-D88D-429B-AFE3-307B5C9D19D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{414792DC-D88D-429B-AFE3-307B5C9D19D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
