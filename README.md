@@ -18,4 +18,4 @@ The following video demonstrates the most important features:
 
 **Screenshots:**
 
-![SmartFlip screenshot](http://www.gratianlup.com/documents/tab_control.png)  
+![SmartFlip screenshot](http://www.gratianlup.com/documents/tab_control.PNG)  
