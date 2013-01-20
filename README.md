@@ -2,7 +2,7 @@ Tab Control
 ===========
 
 The project is a highly customizable Tab Control component.  
-Written in *C#* and using *WinForms* for the GUI.  
+Written in *C#* using *WinForms* for the GUI.  
 
 **Features:**
 - Each tab can have its own foreground/background colors.
@@ -14,4 +14,8 @@ Written in *C#* and using *WinForms* for the GUI.
 - Editor integrated into the Visual Studio WinForms editor.
 
 The following video demonstrates the most important features:  
-**[View demonstration video](http://youtu.be/yBbDyRdaxLc)**
+**[View demonstration video](http://youtu.be/yBbDyRdaxLc)**  
+
+**Screenshots:**
+
+![SmartFlip screenshot](http://www.gratianlup.com/documents/tab_control.png)  
