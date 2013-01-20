@@ -13,5 +13,5 @@ Written in *C#* and using *WinForms* for the GUI.
 - Options to reorder the tabs, functional in all display modes.
 - Editor integrated into the Visual Studio WinForms editor.
 
-The following video demonstrates the most important features:
-[View demonstration video](http://youtu.be/yBbDyRdaxLc)
+The following video demonstrates the most important features:  
+**[View demonstration video](http://youtu.be/yBbDyRdaxLc)**
