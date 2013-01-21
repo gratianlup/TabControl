@@ -11,7 +11,7 @@ Written in *C#* using *WinForms* for the GUI.
 - The tab bar can be displayed either horizontally or vertically.
 - Option to display a close button on all tabs or only on the selected tab.
 - Options to reorder the tabs, functional in all display modes.
-- Editor integrated into the Visual Studio WinForms editor.
+- Editor integrated into the *Visual Studio WinForms* editor.
 
 The following video demonstrates the most important features:  
 **[View demonstration video](http://youtu.be/yBbDyRdaxLc)**  
