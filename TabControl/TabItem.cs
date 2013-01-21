@@ -68,20 +68,25 @@ namespace TabControl {
                     numArray[0] = new float[] { 0.2125f, 0.2125f, 0.2125f, 0f, 0f };
                     numArray[1] = new float[] { 0.2577f, 0.2577f, 0.2577f, 0f, 0f };
                     numArray[2] = new float[] { 0.0361f, 0.0361f, 0.0361f, 0f, 0f };
+
                     float[] numArray3 = new float[5];
                     numArray3[3] = 1f;
                     numArray[3] = numArray3;
                     numArray[4] = new float[] { 0.38f, 0.38f, 0.38f, 0f, 1f };
+
                     float[][] numArray2 = new float[5][];
                     float[] numArray4 = new float[5];
                     numArray4[0] = 1f;
                     numArray2[0] = numArray4;
+
                     float[] numArray5 = new float[5];
                     numArray5[1] = 1f;
                     numArray2[1] = numArray5;
+
                     float[] numArray6 = new float[5];
                     numArray6[2] = 1f;
                     numArray2[2] = numArray6;
+
                     float[] numArray7 = new float[5];
                     numArray7[3] = 0.7f;
                     numArray2[3] = numArray7;
@@ -94,27 +99,33 @@ namespace TabControl {
             }
         }
 
-
         private static ColorMatrix MultiplyColorMatrix(float[][] matrix1, float[][] matrix2) {
             int num = 5;
             float[][] newColorMatrix = new float[num][];
+
             for(int i = 0; i < num; i++) {
                 newColorMatrix[i] = new float[num];
             }
+
             float[] numArray2 = new float[num];
+
             for(int j = 0; j < num; j++) {
                 for(int k = 0; k < num; k++) {
                     numArray2[k] = matrix1[k][j];
                 }
+
                 for(int m = 0; m < num; m++) {
                     float[] numArray3 = matrix2[m];
                     float num6 = 0f;
+
                     for(int n = 0; n < num; n++) {
                         num6 += numArray3[n] * numArray2[n];
                     }
+
                     newColorMatrix[m][j] = num6;
                 }
             }
+
             return new ColorMatrix(newColorMatrix);
         }
 
@@ -348,30 +359,32 @@ namespace TabControl {
         public bool Selected {
             get { return _selected; }
             set {
-                if(value != _selected) {
-                    _selected = value;
-                    backgroundPath = null;
+                if(value == _selected) {
+                    return;
+                }
 
-                    if(_selected) {
-                        CancelEventArgs callSelectedEvent = new CancelEventArgs();
-                        OnBeforeTabSelected(callSelectedEvent);
+                _selected = value;
+                backgroundPath = null;
 
-                        if(callSelectedEvent.Cancel == false) {
-                            UpdateSelectedState();
+                if(_selected) {
+                    CancelEventArgs callSelectedEvent = new CancelEventArgs();
+                    OnBeforeTabSelected(callSelectedEvent);
 
-                            // notify parent
-                            if(_owner != null) {
-                                _owner.TabItemSelected(this);
-                            }
-
-                            // call event
-                            OnTabSelected(EventArgs.Empty);
-                        }
-                    }
-                    else {
-                        // just update the state
+                    if(callSelectedEvent.Cancel == false) {
                         UpdateSelectedState();
+
+                        // notify parent
+                        if(_owner != null) {
+                            _owner.TabItemSelected(this);
+                        }
+
+                        // call event
+                        OnTabSelected(EventArgs.Empty);
                     }
+                }
+                else {
+                    // just update the state
+                    UpdateSelectedState();
                 }
             }
         }
@@ -402,7 +415,6 @@ namespace TabControl {
 
         public TabItem() {
             InitializeComponent();
-
             TabWidth = TabHost.DefaultTabWidth;
 
             // set default colors
@@ -418,7 +430,7 @@ namespace TabControl {
 
             // enable double-buffering
             this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
+                          ControlStyles.UserPaint    |
                           ControlStyles.AllPaintingInWmPaint,
                           true);
 
@@ -483,7 +495,6 @@ namespace TabControl {
 
         protected override void OnEnabledChanged(EventArgs e) {
             ForceUpdate();
-
             base.OnEnabledChanged(e);
         }
 
@@ -548,7 +559,7 @@ namespace TabControl {
                     // DragSize values are very small (4 on Vista), so we don't divide it by 2,
                     // the way it should be done.
                     if((Math.Abs(e.Location.X - lastMouseDownLocation.X) >= SystemInformation.DragSize.Width) ||
-                        (Math.Abs(e.Location.Y - lastMouseDownLocation.Y) >= SystemInformation.DragSize.Height)) {
+                       (Math.Abs(e.Location.Y - lastMouseDownLocation.Y) >= SystemInformation.DragSize.Height)) {
                         // begin reordering
                         reordering = true;
                         this.Capture = true; // capture the mouse
@@ -684,15 +695,15 @@ namespace TabControl {
 
         private void DrawCloseButtonInternal(int x, int y, Pen linePen, Brush backBrush, Graphics g) {
             // fill background
-            g.FillRectangle(backBrush,
-                            x, y, CloseButtonWidth, CloseButtonHeight);
+            g.FillRectangle(backBrush, x, y, CloseButtonWidth, CloseButtonHeight);
 
             // draw border
             g.DrawRectangle(linePen, x, y, CloseButtonWidth, CloseButtonHeight);
 
             // draw the "X"
             g.DrawLine(linePen, x + 3, y + 3,
-                                x + CloseButtonWidth - 3, y + CloseButtonHeight - 3);
+                                x + CloseButtonWidth - 3,
+                                y + CloseButtonHeight - 3);
 
             g.DrawLine(linePen, x + CloseButtonWidth - 3, y + 3,
                                 x + 3, y + CloseButtonHeight - 3);
@@ -710,7 +721,8 @@ namespace TabControl {
 
             Rectangle bounds = Rectangle.Empty;
 
-            if(_owner.TabAlignment == TabAlignment.Top || _owner.TabAlignment == TabAlignment.Bottom) {
+            if((_owner.TabAlignment == TabAlignment.Top) || 
+               (_owner.TabAlignment == TabAlignment.Bottom)) {
                 if(_owner.CloseButtonAlignment == CloseButtonAlignment.Left) {
                     bounds = new Rectangle(availableSpace.Left,
                                            availableSpace.Top,
@@ -735,7 +747,8 @@ namespace TabControl {
                                                    availableSpace.Height);
                 }
             }
-            else if(_owner.TabAlignment == TabAlignment.Left || _owner.TabAlignment == TabAlignment.Right) {
+            else if((_owner.TabAlignment == TabAlignment.Left) || 
+                    (_owner.TabAlignment == TabAlignment.Right)) {
                 if(_owner.CloseButtonAlignment == CloseButtonAlignment.Left) {
                     bounds = new Rectangle(availableSpace.Left,
                                            availableSpace.Top,
@@ -775,7 +788,8 @@ namespace TabControl {
             int imageWidth = _image.Width;
             int imageHeight = _image.Height;
 
-            if(_owner.TabAlignment == TabAlignment.Top || _owner.TabAlignment == TabAlignment.Bottom) {
+            if((_owner.TabAlignment == TabAlignment.Top) ||
+               (_owner.TabAlignment == TabAlignment.Bottom)) {
                 switch(_textImageRelation) {
                     case TextImageRelation.ImageBeforeText: {
                             bounds = new Rectangle(availableSpace.Left,
@@ -787,7 +801,6 @@ namespace TabControl {
                                                            availableSpace.Top,
                                                            Math.Max(1, availableSpace.Width - imageWidth),
                                                            availableSpace.Height);
-
                             break;
                         }
                     case TextImageRelation.TextBeforeImage: {
@@ -800,12 +813,12 @@ namespace TabControl {
                                                            availableSpace.Top,
                                                            Math.Max(1, availableSpace.Width - imageWidth),
                                                            availableSpace.Height);
-
                             break;
                         }
                 }
             }
-            else if(_owner.TabAlignment == TabAlignment.Left || _owner.TabAlignment == TabAlignment.Right) {
+            else if((_owner.TabAlignment == TabAlignment.Left) || 
+                    (_owner.TabAlignment == TabAlignment.Right)) {
                 switch(_textImageRelation) {
                     case TextImageRelation.ImageBeforeText: {
                             bounds = new Rectangle(availableSpace.Left,
@@ -817,7 +830,6 @@ namespace TabControl {
                                                            availableSpace.Top + imageHeight,
                                                            availableSpace.Width,
                                                            Math.Max(1, availableSpace.Height - imageHeight));
-
                             break;
                         }
                     case TextImageRelation.TextBeforeImage: {
@@ -830,7 +842,6 @@ namespace TabControl {
                                                            availableSpace.Top,
                                                            availableSpace.Width,
                                                            Math.Max(1, availableSpace.Height - imageHeight));
-
                             break;
                         }
                 }
@@ -857,7 +868,8 @@ namespace TabControl {
             int y;
 
             // set button position 
-            if(_owner.TabAlignment == TabAlignment.Top || _owner.TabAlignment == TabAlignment.Bottom) {
+            if((_owner.TabAlignment == TabAlignment.Top) || 
+               (_owner.TabAlignment == TabAlignment.Bottom)) {
                 if(_owner.CloseButtonAlignment == CloseButtonAlignment.Left) {
                     x = bounds.Left;
                 }
@@ -877,7 +889,7 @@ namespace TabControl {
                 }
 
                 // center horizontally
-                x = bounds.Left + bounds.Width / 2 - CloseButtonWidth / 2 - 1; // -1 is required, doesn't look otherwise
+                x = bounds.Left + bounds.Width / 2 - CloseButtonWidth / 2 - 1; // -1 is required
             }
 
             // set location
@@ -897,7 +909,6 @@ namespace TabControl {
 
                         Pen linePen = new Pen(MakeTransparentColor(((SolidBrush)borderBrush).Color, borderOpacity));
                         DrawCloseButtonInternal(x, y, linePen, backgroundBrush, g);
-
                         break;
                     }
                 case CloseButtonState.Over: {
@@ -906,13 +917,11 @@ namespace TabControl {
                                                                            _owner.CloseButtonOverColor);
 
                         DrawCloseButtonInternal(x, y, linePen, backgroundBrush, g);
-
                         break;
                     }
                 case CloseButtonState.Pressed: {
                         Pen linePen = new Pen(((SolidBrush)currentForeBrush).Color);
                         DrawCloseButtonInternal(x, y, linePen, new SolidBrush(_owner.CloseButtonPressedColor), g);
-
                         break;
                     }
             }
@@ -921,7 +930,8 @@ namespace TabControl {
 
         private int GetRealWidth(Rectangle rect) {
             if(_owner != null) {
-                if(_owner.TabAlignment == TabAlignment.Top || _owner.TabAlignment == TabAlignment.Bottom) {
+                if((_owner.TabAlignment == TabAlignment.Top) || 
+                   (_owner.TabAlignment == TabAlignment.Bottom)) {
                     return rect.Width;
                 }
                 else {
@@ -935,7 +945,8 @@ namespace TabControl {
 
         private int GetReaHeight(Rectangle rect) {
             if(_owner != null) {
-                if(_owner.TabAlignment == TabAlignment.Top || _owner.TabAlignment == TabAlignment.Bottom) {
+                if((_owner.TabAlignment == TabAlignment.Top) || 
+                   (_owner.TabAlignment == TabAlignment.Bottom)) {
                     return rect.Height;
                 }
                 else {
@@ -964,50 +975,50 @@ namespace TabControl {
 
             switch(_textAlignment) {
                 case ContentAlignment.BottomCenter: {
-                        x += width / 2 - textSize.Width / 2;
-                        y += height - textSize.Height;
-                        break;
-                    }
+                    x += width / 2 - textSize.Width / 2;
+                    y += height - textSize.Height;
+                    break;
+                }
                 case ContentAlignment.BottomLeft: {
-                        x += 0;
-                        y += height - textSize.Height;
-                        break;
-                    }
+                    x += 0;
+                    y += height - textSize.Height;
+                    break;
+                }
                 case ContentAlignment.BottomRight: {
-                        x += width - textSize.Width;
-                        y += height - textSize.Height;
-                        break;
-                    }
+                    x += width - textSize.Width;
+                    y += height - textSize.Height;
+                    break;
+                }
                 case ContentAlignment.MiddleCenter: {
-                        x += width / 2 - textSize.Width / 2;
-                        y += height / 2 - textSize.Height / 2;
-                        break;
-                    }
+                    x += width / 2 - textSize.Width / 2;
+                    y += height / 2 - textSize.Height / 2;
+                    break;
+                }
                 case ContentAlignment.MiddleLeft: {
-                        x += 0;
-                        y += height / 2 - textSize.Height / 2;
-                        break;
-                    }
+                    x += 0;
+                    y += height / 2 - textSize.Height / 2;
+                    break;
+                }
                 case ContentAlignment.MiddleRight: {
-                        x += width - textSize.Width;
-                        y += height / 2 - textSize.Height / 2;
-                        break;
-                    }
+                    x += width - textSize.Width;
+                    y += height / 2 - textSize.Height / 2;
+                    break;
+                }
                 case ContentAlignment.TopCenter: {
-                        x += width / 2 - textSize.Width / 2;
-                        y += 0;
-                        break;
-                    }
+                    x += width / 2 - textSize.Width / 2;
+                    y += 0;
+                    break;
+                }
                 case ContentAlignment.TopLeft: {
-                        x += 0;
-                        y += 0;
-                        break;
-                    }
+                    x += 0;
+                    y += 0;
+                    break;
+                }
                 case ContentAlignment.TopRight: {
-                        x += width - textSize.Width;
-                        y += 0;
-                        break;
-                    }
+                    x += width - textSize.Width;
+                    y += 0;
+                    break;
+                }
             }
 
             // draw the string
@@ -1018,7 +1029,8 @@ namespace TabControl {
                 textBrush = Brushes.Silver;
             }
 
-            if(_owner.TabAlignment == TabAlignment.Top || _owner.TabAlignment == TabAlignment.Bottom) {
+            if((_owner.TabAlignment == TabAlignment.Top) || 
+               (_owner.TabAlignment == TabAlignment.Bottom)) {
                 if(_autoEllipsis) {
                     StringFormat format = new StringFormat();
                     format.Trimming = StringTrimming.EllipsisCharacter;
@@ -1030,9 +1042,11 @@ namespace TabControl {
                     g.DrawString(_tabText, this.Font, textBrush, x, y);
                 }
             }
-            else if(_owner.TabAlignment == TabAlignment.Left || _owner.TabAlignment == TabAlignment.Right) {
+            else if((_owner.TabAlignment == TabAlignment.Left) || 
+                    (_owner.TabAlignment == TabAlignment.Right)) {
                 // draw the string on a bitmap and rotate it
-                using(Bitmap bufferImage = new Bitmap((int)width, (int)height, System.Drawing.Imaging.PixelFormat.Format32bppArgb)) {
+                using(Bitmap bufferImage = new Bitmap((int)width, (int)height, 
+                                                      System.Drawing.Imaging.PixelFormat.Format32bppArgb)) {
                     using(Graphics graphics = Graphics.FromImage(bufferImage)) {
                         graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                         TextFormatFlags textFlags = TextFormatFlags.Default;
@@ -1046,18 +1060,18 @@ namespace TabControl {
                         // draw the text
                         // uWe use the TextRenderer object because DrawString from Graphics
                         // doesn't work right when drawing on bitmaps
+                        Rectangle bouds = new Rectangle((int)x - bounds.Left, (int)y - bounds.Top,
+                                                        (int)width, (int)height);
                         TextRenderer.DrawText(graphics, _tabText, this.Font,
-                                              new Rectangle((int)x - bounds.Left, (int)y - bounds.Top,
-                                                            (int)width, (int)height),
-                                              textColor, textFlags);
+                                              bounds, textColor, textFlags);
 
                         // rotate the text
                         if(_owner.TabAlignment == TabAlignment.Left) {
                             bufferImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
                             g.DrawImage(bufferImage, bounds.Left, bounds.Top, bufferImage.Width, bufferImage.Height);
                         }
-                        else // Right
-                        {
+                        else {
+                            // on the right
                             bufferImage.RotateFlip(RotateFlipType.Rotate270FlipNone);
                             g.DrawImage(bufferImage, bounds.Left, bounds.Top, bufferImage.Width, bufferImage.Height);
                         }
@@ -1171,57 +1185,53 @@ namespace TabControl {
             // draw the path according to the TabAlignment
             switch(_owner.TabAlignment) {
                 case TabAlignment.Top: {
-                        // just fill the paths	
-                        g.FillPath(brush, path);
+                    // just fill the paths	
+                    g.FillPath(brush, path);
 
-                        if(borderPen != null) {
-                            g.DrawPath(borderPen, path);
-                            g.DrawLine(new Pen(brush), x + 1, y + height, x + width - 1, y + height);
-                        }
-
-                        break;
+                    if(borderPen != null) {
+                        g.DrawPath(borderPen, path);
+                        g.DrawLine(new Pen(brush), x + 1, y + height, x + width - 1, y + height);
                     }
+                    break;
+                }
                 case TabAlignment.Bottom: {
-                        g.TranslateTransform(bounds.Width, bounds.Height);
-                        g.RotateTransform(180);
-                        g.FillPath(brush, path);
+                    g.TranslateTransform(bounds.Width, bounds.Height);
+                    g.RotateTransform(180);
+                    g.FillPath(brush, path);
 
-                        if(borderPen != null) {
-                            g.DrawPath(borderPen, path);
-                            g.DrawLine(new Pen(brush), x + 1, y + height, x + width - 1, y + height);
-                        }
-
-                        g.ResetTransform();
-
-                        break;
+                    if(borderPen != null) {
+                        g.DrawPath(borderPen, path);
+                        g.DrawLine(new Pen(brush), x + 1, y + height, x + width - 1, y + height);
                     }
+
+                    g.ResetTransform();
+                    break;
+                }
                 case TabAlignment.Left: {
-                        g.TranslateTransform(bounds.Width, 0);
-                        g.RotateTransform(90);
-                        g.FillPath(brush, path);
+                    g.TranslateTransform(bounds.Width, 0);
+                    g.RotateTransform(90);
+                    g.FillPath(brush, path);
 
-                        if(borderPen != null) {
-                            g.DrawPath(borderPen, path);
-                            g.DrawLine(new Pen(brush), x + 1, y + height, x + width - 1, y + height);
-                        }
-
-                        g.ResetTransform();
-
-                        break;
+                    if(borderPen != null) {
+                        g.DrawPath(borderPen, path);
+                        g.DrawLine(new Pen(brush), x + 1, y + height, x + width - 1, y + height);
                     }
+
+                    g.ResetTransform();
+                    break;
+                }
                 case TabAlignment.Right: {
-                        g.TranslateTransform(0, bounds.Height);
-                        g.RotateTransform(-90);
-                        g.FillPath(brush, path);
+                    g.TranslateTransform(0, bounds.Height);
+                    g.RotateTransform(-90);
+                    g.FillPath(brush, path);
 
-                        if(borderPen != null) {
-                            g.DrawPath(borderPen, path);
-                        }
-
-                        g.ResetTransform();
-
-                        break;
+                    if(borderPen != null) {
+                        g.DrawPath(borderPen, path);
                     }
+
+                    g.ResetTransform();
+                    break;
+                }
             }
         }
 
@@ -1230,9 +1240,9 @@ namespace TabControl {
             if(_borderColor != null && _borderColor != Color.Empty) {
                 // no border color is set
                 return new Rectangle(Padding.Left,
-                              Padding.Top,
-                              this.Width - Padding.Right - Padding.Left - 1,
-                              this.Height - Padding.Bottom - Padding.Top - 1);
+                                     Padding.Top,
+                                     this.Width - Padding.Right - Padding.Left - 1,
+                                     this.Height - Padding.Bottom - Padding.Top - 1);
             }
 
             // use all available space by default
@@ -1246,13 +1256,15 @@ namespace TabControl {
         protected Rectangle ComputeElementSpace(Rectangle bounds) {
             Rectangle availableSpace = Rectangle.Empty;
 
-            if(_owner.TabAlignment == TabAlignment.Top || _owner.TabAlignment == TabAlignment.Bottom) {
+            if((_owner.TabAlignment == TabAlignment.Top) || 
+               (_owner.TabAlignment == TabAlignment.Bottom)) {
                 availableSpace = new Rectangle(bounds.Left + CornerRoundness,
                                                bounds.Top,
                                                bounds.Width - CornerRoundness * 2,
                                                bounds.Height);
             }
-            else if(_owner.TabAlignment == TabAlignment.Left || _owner.TabAlignment == TabAlignment.Right) {
+            else if((_owner.TabAlignment == TabAlignment.Left) || 
+                    (_owner.TabAlignment == TabAlignment.Right)) {
                 availableSpace = new Rectangle(bounds.Left,
                                                bounds.Top + CornerRoundness,
                                                bounds.Width,
@@ -1272,26 +1284,22 @@ namespace TabControl {
             }
 
             // clear
-            e.Graphics.FillRectangle(new SolidBrush(_owner.BackColor), 0, 0, this.Width, this.Height);
+            e.Graphics.FillRectangle(new SolidBrush(_owner.BackColor),
+                                     0, 0, this.Width, this.Height);
 
             // compute the bounds of the background, taking the Padding property into account
             Rectangle availableSpace = ComputeTabBackgroundBounds();
-
-            // draw the background
             DrawTabBackground(availableSpace, currentBackBrush, e.Graphics);
 
             // compute the available space for other elements (image, text, close button);
             Rectangle elementSpace = ComputeElementSpace(availableSpace);
 
-            // draw close button
             Rectangle closeButtonBounds = ComputeCloseButtonBounds(ref elementSpace);
             DrawCloseButton(closeButtonBounds, closeButtonState, e.Graphics);
 
-            // draw image
             Rectangle imageBounds = ComputeImageBounds(ref elementSpace);
             DrawImage(imageBounds, e.Graphics);
 
-            // draw the text
             Rectangle textBounds = ComputeTextBounds(ref elementSpace);
             DrawText(textBounds, e.Graphics);
         }
@@ -1332,7 +1340,7 @@ namespace TabControl {
             AutoResizeHandles = true;
             // add glyphs
             selectionGlyph = new TabItemResizeGlyph(BehaviorService, tabItem,
-                                                       adorner, selectionService, changeService);
+                                                    adorner, selectionService, changeService);
             adorner.Glyphs.Add(selectionGlyph);
         }
 
@@ -1391,7 +1399,7 @@ namespace TabControl {
         #endregion
 
         public TabItemResizeGlyph(BehaviorService behaviorSvc, Control control, Adorner glyphAdorner,
-                                    ISelectionService selectionService, IComponentChangeService changeService)
+                                  ISelectionService selectionService, IComponentChangeService changeService)
             : base(new TabItemResizeBehavior(control as TabItem)) {
             service = behaviorSvc;
             tab = control as TabItem;
@@ -1428,12 +1436,14 @@ namespace TabControl {
             }
 
             if(alignment == TabAlignment.Top || alignment == TabAlignment.Bottom) {
-                glyphBounds = new Rectangle(edge.X + tab.Width - GlyphWidth / 2 + 1, edge.Y + tab.Height / 2 - GlyphHeight / 2,
-                                     GlyphWidth, GlyphHeight);
+                glyphBounds = new Rectangle(edge.X + tab.Width - GlyphWidth / 2 + 1, 
+                                            edge.Y + tab.Height / 2 - GlyphHeight / 2,
+                                            GlyphWidth, GlyphHeight);
             }
             else {
-                glyphBounds = new Rectangle(edge.X + tab.Width / 2 - GlyphWidth / 2, edge.Y + tab.Height - GlyphHeight / 2 + 1,
-                                     GlyphWidth, GlyphHeight);
+                glyphBounds = new Rectangle(edge.X + tab.Width / 2 - GlyphWidth / 2, 
+                                            edge.Y + tab.Height - GlyphHeight / 2 + 1,
+                                            GlyphWidth, GlyphHeight);
             }
         }
 
@@ -1454,7 +1464,7 @@ namespace TabControl {
         private void OnComponentChanged(object sender, ComponentChangedEventArgs e) {
             if(object.ReferenceEquals(e.Component, tab)) {
                 // check changed property
-                if(e.Member.Name == "TabWidth" ||
+                if(e.Member.Name == "TabWidth"  ||
                    e.Member.Name == "TabHeight" ||
                    e.Member.Name == "Location") {
                     //redraw the adorner
@@ -1476,7 +1486,7 @@ namespace TabControl {
                     alignment = tab.Owner.TabAlignment;
                 }
 
-                if(alignment == TabAlignment.Top || alignment == TabAlignment.Bottom) {
+                if((alignment == TabAlignment.Top) || (alignment == TabAlignment.Bottom)) {
                     return Cursors.SizeWE;
                 }
                 else {
@@ -1544,7 +1554,7 @@ namespace TabControl {
                 // compute the width
                 int width;
 
-                if(alignment == TabAlignment.Top || alignment == TabAlignment.Bottom) {
+                if((alignment == TabAlignment.Top) || (alignment == TabAlignment.Bottom)) {
                     width = Math.Max(1, startWidth + (mouseLocation.X - startLocation.X));
                 }
                 else {
@@ -1722,6 +1732,4 @@ namespace TabControl {
 
         #endregion
     }
-
-
 }

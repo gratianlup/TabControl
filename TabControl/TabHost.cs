@@ -76,7 +76,7 @@ namespace TabControl {
 
             // enable double-buffering
             this.SetStyle(ControlStyles.DoubleBuffer |
-                          ControlStyles.UserPaint |
+                          ControlStyles.UserPaint    |
                           ControlStyles.AllPaintingInWmPaint,
                           true);
 
@@ -314,7 +314,8 @@ namespace TabControl {
 
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [EditorAttribute(typeof(System.ComponentModel.Design.CollectionEditor), typeof(System.Drawing.Design.UITypeEditor))]
+        [EditorAttribute(typeof(System.ComponentModel.Design.CollectionEditor), 
+                         typeof(System.Drawing.Design.UITypeEditor))]
         [Browsable(true)]
         public TabItemCollection Tabs {
             get { return tabs; }
@@ -380,44 +381,39 @@ namespace TabControl {
 
             for(int i = 0; i < tabs.Count; i++) {
                 TabItem tabItem = tabs[i];
-
                 int tabWidth = tabItem.TabWidth;
                 int tabHeight = GetTabHeight(tabItem);
 
                 // set position
                 switch(_tabAlignment) {
                     case TabAlignment.Top: {
-                            tabItem.Left = tabPosition;
-                            tabItem.Top = this.Height - tabHeight - Padding.Bottom;
-                            tabItem.Width = tabWidth;
-                            tabItem.Height = tabHeight;
-
-                            break;
-                        }
+                        tabItem.Left = tabPosition;
+                        tabItem.Top = this.Height - tabHeight - Padding.Bottom;
+                        tabItem.Width = tabWidth;
+                        tabItem.Height = tabHeight;
+                        break;
+                    }
                     case TabAlignment.Bottom: {
-                            tabItem.Left = tabPosition;
-                            tabItem.Top = Padding.Top;
-                            tabItem.Width = tabWidth;
-                            tabItem.Height = tabHeight;
-
-                            break;
-                        }
+                        tabItem.Left = tabPosition;
+                        tabItem.Top = Padding.Top;
+                        tabItem.Width = tabWidth;
+                        tabItem.Height = tabHeight;
+                        break;
+                    }
                     case TabAlignment.Left: {
-                            tabItem.Left = Padding.Left;
-                            tabItem.Top = tabPosition;
-                            tabItem.Width = tabHeight;
-                            tabItem.Height = tabWidth;
-
-                            break;
-                        }
+                        tabItem.Left = Padding.Left;
+                        tabItem.Top = tabPosition;
+                        tabItem.Width = tabHeight;
+                        tabItem.Height = tabWidth;
+                        break;
+                    }
                     case TabAlignment.Right: {
-                            tabItem.Left = this.Width - tabHeight - Padding.Right;
-                            tabItem.Top = tabPosition;
-                            tabItem.Width = tabHeight;
-                            tabItem.Height = tabWidth;
-
-                            break;
-                        }
+                        tabItem.Left = this.Width - tabHeight - Padding.Right;
+                        tabItem.Top = tabPosition;
+                        tabItem.Width = tabHeight;
+                        tabItem.Height = tabWidth;
+                        break;
+                    }
                 }
 
                 // increment position values
@@ -435,33 +431,24 @@ namespace TabControl {
             Point location = Point.Empty;
 
             switch(_tabAlignment) {
-                case TabAlignment.Top: {
-                        //location =  new Point(Math.Max(0, Math.Min(this.Width - tab.Width,tab.Left +  mousePosition.X - tab.Width / 2)),
-                        //					  this.Height - tab.Height);
-
-                        location = new Point(KeepInHostWidth(tab.Left + mousePosition.X - tab.Width / 2, tab.Width),
-                                             this.Height - tab.Height);
-
-                        break;
-                    }
+            case TabAlignment.Top: {
+                    location = new Point(KeepInHostWidth(tab.Left + mousePosition.X - tab.Width / 2, tab.Width),
+                                         this.Height - tab.Height);
+                    break;
+                }
                 case TabAlignment.Bottom: {
-                        location = new Point(KeepInHostWidth(tab.Left + mousePosition.X - tab.Width / 2, tab.Width),
-                                             0);
-
-                        break;
-                    }
+                    location = new Point(KeepInHostWidth(tab.Left + mousePosition.X - tab.Width / 2, tab.Width), 0);
+                    break;
+                }
                 case TabAlignment.Left: {
-                        location = new Point(0,
-                                             KeepInHostHeight(tab.Top + mousePosition.Y - tab.Height / 2, tab.Height));
-
+                        location = new Point(0, KeepInHostHeight(tab.Top + mousePosition.Y - tab.Height / 2, tab.Height));
                         break;
                     }
                 case TabAlignment.Right: {
-                        location = new Point(this.Width - tab.Width,
-                                             KeepInHostHeight(tab.Top + mousePosition.Y - tab.Height / 2, tab.Height));
-
-                        break;
-                    }
+                    location = new Point(this.Width - tab.Width,
+                                         KeepInHostHeight(tab.Top + mousePosition.Y - tab.Height / 2, tab.Height));
+                    break;
+                }
             }
 
             // return the location in screen coordinates
@@ -472,7 +459,8 @@ namespace TabControl {
         private Point MousePositionToHost(TabItem tab, Point mousePosition) {
             Point location = mousePosition;
 
-            if(_tabAlignment == TabAlignment.Top || _tabAlignment == TabAlignment.Bottom) {
+            if((_tabAlignment == TabAlignment.Top) || 
+               (_tabAlignment == TabAlignment.Bottom)) {
                 location = new Point(mousePosition.X + tab.Left,
                                      mousePosition.Y);
             }
@@ -489,22 +477,26 @@ namespace TabControl {
             TabItem lastTab = tabs[tabs.Count - 1];
 
             switch(_tabAlignment) {
-                case TabAlignment.Top: {
-                        return new Point(Math.Max(this.Padding.Left + 1, Math.Min(lastTab.Left + lastTab.Width - 1, mousePosition.X)),
-                                         this.Height - 1);
-                    }
-                case TabAlignment.Bottom: {
-                        return new Point(Math.Max(this.Padding.Left + 1, Math.Min(lastTab.Left + lastTab.Width - 1, mousePosition.X)),
-                                         1);
-                    }
-                case TabAlignment.Left: {
-                        return new Point(1,
-                                         Math.Max(this.Padding.Top + 1, Math.Min(lastTab.Top + lastTab.Height - 1, mousePosition.Y)));
-                    }
-                case TabAlignment.Right: {
-                        return new Point(this.Width - 1,
-                                         Math.Max(this.Padding.Top + 1, Math.Min(lastTab.Top + lastTab.Height - 1, mousePosition.Y)));
-                    }
+            case TabAlignment.Top: {
+                    return new Point(Math.Max(this.Padding.Left + 1, 
+                                              Math.Min(lastTab.Left + lastTab.Width - 1, mousePosition.X)),
+                                     this.Height - 1);
+                }
+            case TabAlignment.Bottom: {
+                    return new Point(Math.Max(this.Padding.Left + 1, 
+                                              Math.Min(lastTab.Left + lastTab.Width - 1, mousePosition.X)),
+                                     1);
+                }
+            case TabAlignment.Left: {
+                    return new Point(1,
+                                     Math.Max(this.Padding.Top + 1, 
+                                              Math.Min(lastTab.Top + lastTab.Height - 1, mousePosition.Y)));
+                }
+            case TabAlignment.Right: {
+                    return new Point(this.Width - 1,
+                                     Math.Max(this.Padding.Top + 1, 
+                                              Math.Min(lastTab.Top + lastTab.Height - 1, mousePosition.Y)));
+                }
             }
 
             return Point.Empty;
@@ -516,8 +508,6 @@ namespace TabControl {
 
             // constrain the location in the bounds of the host
             location = ConstrainPositionToHost(location);
-
-            // get the hovered tab
             TabItem hoveredTab = this.GetChildAtPoint(location) as TabItem;
 
             if(hoveredTab != null) {
@@ -540,7 +530,8 @@ namespace TabControl {
             else {
                 TabItem targetTab = tabs[insertIndex];
 
-                if(_tabAlignment == TabAlignment.Top || _tabAlignment == TabAlignment.Bottom) {
+                if((_tabAlignment == TabAlignment.Top) || 
+                   (_tabAlignment == TabAlignment.Bottom)) {
                     if((location.X - targetTab.Left) <= targetTab.Width / 2) {
                         // left side of the tab, check if valid
                         if(insertIndex != tabIndex + 1) {
@@ -638,16 +629,17 @@ namespace TabControl {
             int y = 0;
             TabItem targetTab = tabs[lastInsertIndex];
 
-            if(_tabAlignment == TabAlignment.Top || _tabAlignment == TabAlignment.Bottom) {
+            if((_tabAlignment == TabAlignment.Top) ||
+               (_tabAlignment == TabAlignment.Bottom)) {
                 // set left position
                 if(lastInsertDirection == InsertDirection.Left) {
-                    x = KeepInHostWidth(targetTab.Left - InsertionMarkerWidth / 2 - _tabDistance / 2, InsertionMarkerWidth);
+                    x = KeepInHostWidth(targetTab.Left - InsertionMarkerWidth / 2 - _tabDistance / 2, 
+                                        InsertionMarkerWidth);
                 }
                 else {
-                    x = KeepInHostWidth(targetTab.Left + targetTab.Width -
-                                        InsertionMarkerWidth / 2 +
-                                        _tabDistance / 2 +
-                                        (_tabDistance % 2 == 1 ? 1 : 0), InsertionMarkerWidth);
+                    x = KeepInHostWidth(targetTab.Left + targetTab.Width - InsertionMarkerWidth / 2 + 
+                                        _tabDistance / 2 + (_tabDistance % 2 == 1 ? 1 : 0),
+                                        InsertionMarkerWidth);
                 }
 
                 // set top position
@@ -661,13 +653,13 @@ namespace TabControl {
             else {
                 // set top position
                 if(lastInsertDirection == InsertDirection.Left) {
-                    y = KeepInHostHeight(targetTab.Top - InsertionMarkerHeight / 2 - _tabDistance / 2, InsertionMarkerHeight);
+                    y = KeepInHostHeight(targetTab.Top - InsertionMarkerHeight / 2 - _tabDistance / 2, 
+                                         InsertionMarkerHeight);
                 }
                 else {
-                    y = KeepInHostHeight(targetTab.Top + targetTab.Height -
-                                         InsertionMarkerHeight / 2 +
-                                         _tabDistance / 2 +
-                                         (_tabDistance % 2 == 1 ? 1 : 0), InsertionMarkerHeight);
+                    y = KeepInHostHeight(targetTab.Top + targetTab.Height - InsertionMarkerHeight / 2 + 
+                                         _tabDistance / 2 + (_tabDistance % 2 == 1 ? 1 : 0), 
+                                         InsertionMarkerHeight);
                 }
 
                 // set left position
@@ -679,7 +671,9 @@ namespace TabControl {
                 }
             }
 
-            Rectangle insertioMarkerBounds = new Rectangle(x, y, InsertionMarkerWidth, InsertionMarkerHeight);
+            Rectangle insertioMarkerBounds = new Rectangle(x, y, 
+                                                           InsertionMarkerWidth, 
+                                                           InsertionMarkerHeight);
             DrawInsertionMarker(insertioMarkerBounds, e.Graphics);
         }
 
@@ -689,7 +683,8 @@ namespace TabControl {
 
         protected void DrawInsertionMarker(Rectangle bounds, Graphics g) {
             // set the brush
-            Color markerColor = _insertionMarkerColor != Color.Empty ? _insertionMarkerColor : Color.Black;
+            Color markerColor = _insertionMarkerColor != Color.Empty ? 
+                                _insertionMarkerColor : Color.Black;
             Brush markerBrush = new SolidBrush(markerColor);
 
             // create the triangle
@@ -702,7 +697,8 @@ namespace TabControl {
             // We draw the triangle in a bitmap first. So it is possible to use the
             // same path to represent all insertion markers by rotating
             // the bitmap.
-            using(Bitmap buffer = new Bitmap(InsertionMarkerWidth, InsertionMarkerHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb)) {
+            using(Bitmap buffer = new Bitmap(InsertionMarkerWidth, InsertionMarkerHeight,
+                                             System.Drawing.Imaging.PixelFormat.Format32bppArgb)) {
                 using(Graphics helperGraphics = Graphics.FromImage(buffer)) {
                     helperGraphics.FillPath(markerBrush, path);
                 }
@@ -710,32 +706,28 @@ namespace TabControl {
                 // draw the path according the TabAlignment
                 switch(_tabAlignment) {
                     case TabAlignment.Top: {
-                            // just draw it
-                            g.DrawImageUnscaled(buffer, bounds.Left, bounds.Top);
-
-                            break;
-                        }
+                        // just draw it
+                        g.DrawImageUnscaled(buffer, bounds.Left, bounds.Top);
+                        break;
+                    }
                     case TabAlignment.Bottom: {
-                            // rotate the image 180 degrees
-                            buffer.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                            g.DrawImageUnscaled(buffer, bounds.Left, bounds.Top);
-
-                            break;
-                        }
+                        // rotate the image 180 degrees
+                        buffer.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                        g.DrawImageUnscaled(buffer, bounds.Left, bounds.Top);
+                        break;
+                    }
                     case TabAlignment.Left: {
-                            // rotate the image 180 degrees
-                            buffer.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                            g.DrawImageUnscaled(buffer, bounds.Left, bounds.Top);
-
-                            break;
-                        }
+                        // rotate the image 180 degrees
+                        buffer.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                        g.DrawImageUnscaled(buffer, bounds.Left, bounds.Top);
+                        break;
+                    }
                     case TabAlignment.Right: {
-                            // rotate the image 180 degrees
-                            buffer.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                            g.DrawImageUnscaled(buffer, bounds.Left, bounds.Top);
-
-                            break;
-                        }
+                        // rotate the image 180 degrees
+                        buffer.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        g.DrawImageUnscaled(buffer, bounds.Left, bounds.Top);
+                        break;
+                    }
                 }
             }
         }
@@ -802,11 +794,8 @@ namespace TabControl {
         public void TabStartDrag(TabItem tab, Point mousePosition) {
             reorderingVisual = new DragDropTabVisual(tab);
 
-            // set visual location
+            // set visual location and show it
             reorderingVisual.Location = GetVisualLocation(tab, mousePosition);
-
-
-            // show the visual
             reorderingVisual.Show();
 
             // refocus the main form
@@ -851,8 +840,6 @@ namespace TabControl {
             // remove insertion marker
             lastInsertDirection = InsertDirection.None;
             this.Invalidate();
-
-            // finish reordering
             reordering = false;
         }
 
@@ -869,7 +856,6 @@ namespace TabControl {
 
             // get the insert direction
             lastInsertDirection = GetInsertDirection(tab, mousePosition, lastInsertIndex);
-
             this.Invalidate(); // force the host to draw the insertion marker
         }
 
@@ -1094,7 +1080,6 @@ namespace TabControl {
             // refresh the adorner
             glyph.ComputeBounds();
             glyph.Adorner.Invalidate();
-
             return true;
         }
     }
