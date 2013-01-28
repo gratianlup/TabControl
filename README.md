@@ -4,7 +4,8 @@ Tab Control
 The project is a highly customizable Tab Control component.  
 Written in *C#* using *WinForms* for the GUI.  
 
-**Features:**
+### Features:  
+
 - Each tab can have its own foreground/background colors.
 - Different foreground/background colors for the selected tab.
 - Each tab can have an image displayed before or after the text.
@@ -16,6 +17,6 @@ Written in *C#* using *WinForms* for the GUI.
 The following video demonstrates the most important features:  
 **[View demonstration video](http://youtu.be/yBbDyRdaxLc)**  
 
-**Screenshots:**
+### Screenshots:  
 
 ![SmartFlip screenshot](http://www.gratianlup.com/documents/tab_control.PNG)  
